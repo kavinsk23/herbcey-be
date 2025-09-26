@@ -5,11 +5,19 @@ const multer = require("multer");
 const upload = multer();
 const { google } = require("googleapis");
 
+const privateKey = Buffer.from(
+  process.env.GOOGLE_PRIVATE_KEY_BASE64,
+  "base64"
+)
+  .toString("utf8")
+  .replace(/\\n/g, "\n") 
+  .replace(/\r/g, ""); 
+
 const serviceAccount = {
   type: process.env.GOOGLE_TYPE,
   project_id: process.env.GOOGLE_PROJECT_ID,
   private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
-  private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+  private_key: privateKey,
   client_email: process.env.GOOGLE_CLIENT_EMAIL,
   client_id: process.env.GOOGLE_CLIENT_ID,
   auth_uri: process.env.GOOGLE_AUTH_URI,
