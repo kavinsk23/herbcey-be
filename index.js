@@ -5,13 +5,7 @@ const multer = require("multer");
 const upload = multer();
 const { google } = require("googleapis");
 
-const privateKey = Buffer.from(
-  process.env.GOOGLE_PRIVATE_KEY_BASE64,
-  "base64"
-)
-  .toString("utf8")
-  .replace(/\\n/g, "\n") 
-  .replace(/\r/g, ""); 
+const privateKey = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n");
 
 const serviceAccount = {
   type: process.env.GOOGLE_TYPE,
@@ -56,6 +50,9 @@ async function updateTrackingStatus(waybillId, currentStatus, lastUpdateTime) {
         break;
       }
     }
+
+    console.log(process.env.GOOGLE_PRIVATE_KEY_BASE64 || process.env.GOOGLE_PRIVATE_KEY);
+
 
     if (!targetRow) {
       console.log(`Waybill ID ${waybillId} not found.`);
